@@ -20,4 +20,50 @@ bash ./scripts/gcloud_build_image.sh \
   -p $TF_VAR_PROJECT_NAME \
   -r $TF_VAR_CLOUD_RUN_SERVICE
 
+gcloud compute addresses create example-ip \
+    --ip-version=IPV4 \
+    --global
+
+gcloud compute addresses describe example-ip \
+    --format="get(address)" \
+    --global
+
+gcloud beta compute network-endpoint-groups create serverless-neg \
+    --region=us-central1 \
+    --network-endpoint-type=SERVERLESS  \
+    --cloud-run-service=$TF_VAR_CLOUD_RUN_SERVICE
+
+gcloud compute backend-services create api-backend-service \
+    --global
+
+gcloud beta compute backend-services add-backend api-backend-service \
+    --global \
+    --network-endpoint-group=serverless-neg \
+    --network-endpoint-group-region=us-central1
+
+gcloud compute url-maps create api-url-map \
+    --default-service api-backend-service
+
+gcloud compute ssl-certificates create www-ssl-cert \
+    --certificate cert/cert.crt \
+    --private-key cert/private.key
+
+gcloud compute target-https-proxies create api-https-proxy \
+    --ssl-certificates=www-ssl-cert \
+    --url-map=api-url-map
+
+gcloud compute forwarding-rules create https-content-rule \
+    --address=example-ip \
+    --target-https-proxy=api-https-proxy \
+    --global \
+    --ports=443
+
+gcloud compute backend-services update api-backend-service \
+    --enable-cdn \
+    --global
+
+
+
+
+
 

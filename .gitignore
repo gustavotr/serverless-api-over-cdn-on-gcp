@@ -4,3 +4,5 @@
 *.tfvars
 .env
 !.env.sample
+*.crt
+*.key

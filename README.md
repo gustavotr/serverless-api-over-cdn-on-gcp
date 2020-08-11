@@ -17,3 +17,7 @@ Run `gcloud auth login` to make sure you have access to your Google Cloud accoun
 ## Deploying
 
 Run `bash main.sh` to deploy.
+
+## Links
+
+[Serverless CDN Configuration on GCP](https://cloud.google.com/load-balancing/docs/negs/setting-up-serverless-negs#gcloud-using-curl)
