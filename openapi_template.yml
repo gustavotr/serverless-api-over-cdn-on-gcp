@@ -1,0 +1,23 @@
+swagger: '2.0'
+info:
+  title: Cloud Endpoints
+  description: Sample API on Cloud Endpoints
+  version: 1.0.0
+host: ${HOST}
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /hello:
+    get:
+      summary: Greet a user
+      operationId: hello
+      x-google-backend:
+        address: ${FUNCTION}
+        protocol: h2
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
