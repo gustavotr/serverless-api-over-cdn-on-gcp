@@ -123,10 +123,13 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 ###
 ### ENDPOINTS
 ###
+locals {
+  function_url = "https://${var.REGION}-${var.PROJECT_NAME}.cloudfunctions.net/${google_cloudfunctions_function.hello_function.name}"
+}
 resource "google_endpoints_service" "openapi_service" {
   service_name   = replace(local.cloud_run_url, "https://", "")
   project        = var.PROJECT_NAME
-  openapi_config = templatefile("openapi_template.yml", { HOST = local.cloud_run_host, FUNCTION = "https://${var.REGION}-${var.PROJECT_NAME}.cloudfunctions.net/${google_cloudfunctions_function.hello_function.name}" })
+  openapi_config = templatefile("openapi_template.yml", { HOST = local.cloud_run_host, FUNCTION = local.function_url })
 
   depends_on = [
     google_cloud_run_service.default,
