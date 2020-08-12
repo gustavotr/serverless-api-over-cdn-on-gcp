@@ -139,3 +139,28 @@ resource "google_endpoints_service" "openapi_service" {
 output "endpoint_config" {
   value = google_endpoints_service.openapi_service.config_id
 }
+
+###
+### IP ADDRESS
+###
+resource "google_compute_global_address" "static" {
+  name = "ipv4-address"
+}
+
+
+output "ip_address" {
+  value = google_compute_global_address.static.address
+}
+
+###
+### NEG (waiting next release of terraform google-beta provider)
+###
+# resource "google_compute_region_network_endpoint_group" "cloudrun_neg" {
+#   provider     = google-beta
+#   name                  = "serverless-neg"
+#   network_endpoint_type = "SERVERLESS"
+#   region                = var.REGION
+#   cloud_run {
+#     service = google_cloud_run_service.default.name
+#   }
+# }

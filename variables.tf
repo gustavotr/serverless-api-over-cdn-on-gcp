@@ -13,3 +13,7 @@ variable "REGION" {
 variable "CLOUD_RUN_SERVICE" {
   description = "Cloud Run service name"
 }
+
+variable "DOMAINS" {
+  description = "Your domains separated by comma"
+}
